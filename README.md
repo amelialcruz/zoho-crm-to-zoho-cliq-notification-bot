@@ -27,3 +27,6 @@ This repository contains the Deluge script used to automate sending new lead not
 
 ## Censored Information:
 - Zoho CRM Organization ID is replaced with `org[YOUR_ORG_ID]` placeholder for public sharing.
+
+## Message Card Preview:
+![Message Card Preview](Message_Card_Preview.png)
