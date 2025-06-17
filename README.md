@@ -17,7 +17,7 @@ This repository contains the Deluge script used to automate sending new lead not
 3. Set the trigger to **On a record action > Create**.
 4. (Optional) Add conditions to filter which leads trigger the notification.
 5. Add an **Instant Action > Function**.
-6. Create a new function (or select existing) and paste the code from `SendLeadToCliq.deluge`.
+6. Create a new function (or select existing) and paste the code from `SendLeadToCliq`.
 7. Configure arguments: Map `LeadID` to `Leads Module > Lead Id`.
 8. Ensure your Zoho Cliq Connection (`[ZOHO_OAUTH_CONNECTION]`) is set up in **Setup > Developer Space > Connections**.
 
