@@ -44,7 +44,7 @@ void automation.SendLeadToCliq(String LeadID)
 
         // Define bot details
         bot = Map();
-        bot.put("name", "leadbot"); // Set your bot's name here
+        bot.put("name", "[BOT_NAME]"); // Set your bot's name here
         response.put("bot", bot);
 
         // Define the main message card properties
