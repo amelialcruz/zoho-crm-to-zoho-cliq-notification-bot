@@ -32,9 +32,9 @@ void automation.SendLeadToCliq(String LeadID)
         source_text = if(lead_source != "N/A", lead_source, "Not Provided");
         status_text = if(lead_status != "N/A", lead_status, "Not Provided");
 
-        ---
-        ## Constructing the Zoho Cliq Message Card
-        ---
+        
+        // Constructing the Zoho Cliq Message Card
+        
 
         // Initialize the main response map for the Cliq message
         response = Map();
