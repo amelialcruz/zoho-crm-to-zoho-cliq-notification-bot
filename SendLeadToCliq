@@ -1,0 +1,116 @@
+void automation.SendLeadToCliq(String LeadID)
+{
+    try
+    {
+        // Fetch lead details from Zoho CRM
+        lead = zoho.crm.getRecordById("Leads", LeadID);
+        info "Lead Data: " + lead; // Log lead data for debugging
+
+        // Extract and handle potential null values for lead fields
+        first_name = ifnull(lead.get("First_Name"), "N/A");
+        last_name = ifnull(lead.get("Last_Name"), "N/A");
+        email = ifnull(lead.get("Email"), "N/A");
+        company = ifnull(lead.get("Company"), "N/A");
+        phone = ifnull(lead.get("Phone"), "N/A");
+        lead_source = ifnull(lead.get("Lead_Source"), "N/A");
+        lead_status = ifnull(lead.get("Lead_Status"), "N/A");
+
+        // Generate hyperlink to the lead record in Zoho CRM
+        // Replace 'org[YOUR_ORG_ID]' with your actual Zoho CRM organization ID
+        record_link = "https://crm.zoho.com/crm/org[YOUR_ORG_ID]/tab/Leads/" + LeadID;
+
+        // Initialize variables for formatted display
+        name = "Not Provided";
+        if (first_name != "N/A" || last_name != "N/A")
+        {
+            name = first_name + " " + last_name;
+        }
+
+        email_text = if(email != "N/A", email, "Not Provided");
+        company_text = if(company != "N/A", company, "Not Provided");
+        phone_text = if(phone != "N/A", phone, "Not Provided");
+        source_text = if(lead_source != "N/A", lead_source, "Not Provided");
+        status_text = if(lead_status != "N/A", lead_status, "Not Provided");
+
+        ---
+        ## Constructing the Zoho Cliq Message Card
+        ---
+
+        // Initialize the main response map for the Cliq message
+        response = Map();
+
+        // This 'text' is the primary notification text visible outside the card.
+        response.put("text", "New Lead: " + name);
+
+        // Define bot details
+        bot = Map();
+        bot.put("name", "leadbot"); // Set your bot's name here
+        response.put("bot", bot);
+
+        // Define the main message card properties
+        card = Map();
+        card.put("title", "New Lead Announcement"); // Title displayed on the card
+
+        // Optional: Uncomment and provide a URL for a thumbnail image if desired
+        // card.put("thumbnail", "https://www.zoho.com/cliq/help/restapi/images/announce_icon.png");
+        card.put("theme", "modern-inline"); // Use the modern-inline theme for a compact card
+        response.put("card", card);
+
+        // Initialize the list of slides for the card's content
+        slidesList = List();
+
+        // Create a slide to display lead details in a list format
+        slide_details = Map();
+        slide_details.put("type", "list"); // Defines this slide as a list type
+        slide_details.put("title", "Lead Details"); // Title for this specific slide
+
+        // --- Configure the 'View Lead' Button ---
+        buttonsList = List();
+        button_view_lead = Map();
+        button_view_lead.put("label", "View Lead"); // Text displayed on the button
+
+        // Define the action taken when the button is clicked (opening a URL)
+        action = Map();
+        action.put("type", "open.url"); // Action type for opening a web URL
+
+        data_action = Map(); // Map to hold the URL data
+        data_action.put("web", record_link); // The actual CRM record URL
+        action.put("data", data_action); // Attach URL data to the action
+
+        button_view_lead.put("action", action); // Attach the action to the button
+        buttonsList.add(button_view_lead); // Add the button to the slide's button list
+        slide_details.put("buttons", buttonsList); // Associate buttons with this specific slide
+
+        // --- Populate the list data for the slide ---
+        dataList = List();
+
+        // Each item in dataList represents a line in the list card.
+        // Using markdown '*' for bold labels.
+        dataList.add("*Email:* " + email_text);
+        dataList.add("*Company:* " + company_text);
+        dataList.add("*Phone:* " + phone_text);
+        dataList.add("*Source:* " + source_text);
+        dataList.add("*Status:* " + status_text);
+        slide_details.put("data", dataList); // Attach the formatted lead data to the slide
+
+        slidesList.add(slide_details); // Add the lead details slide to the main slides list
+        response.put("slides", slidesList); // Attach the slides to the main message payload
+
+        info "Message Payload: " + response; // Log the final JSON payload for debugging
+
+        ---
+        ## Posting to Zoho Cliq
+        ---
+
+        // Post the constructed message card to the specified Cliq channel as the bot
+        // Ensure "[CHANNEL_NAME]" is your target channel name and "[ZOHO_OAUTH_CONNECTION]" is configured in CRM
+        cliq_response = zoho.cliq.postToChannelAsBot("[CHANNEL_NAME]", "[BOT_NAME]", response, "[ZOHO_OAUTH_CONNECTION]");
+        info "Cliq Response: " + cliq_response; // Log the response from Cliq API
+
+    }
+    catch (e)
+    {
+        // Log any errors that occur during the execution of the function
+        info "Error in SendLeadToCliq: " + e;
+    }
+}
