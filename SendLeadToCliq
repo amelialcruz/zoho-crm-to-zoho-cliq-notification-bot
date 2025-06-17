@@ -98,9 +98,9 @@ void automation.SendLeadToCliq(String LeadID)
 
         info "Message Payload: " + response; // Log the final JSON payload for debugging
 
-        ---
-        ## Posting to Zoho Cliq
-        ---
+        
+        // Posting to Zoho Cliq
+        
 
         // Post the constructed message card to the specified Cliq channel as the bot
         // Ensure "[CHANNEL_NAME]" is your target channel name and "[ZOHO_OAUTH_CONNECTION]" is configured in CRM
