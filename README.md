@@ -9,7 +9,7 @@ This repository contains the Deluge script used to automate sending new lead not
 - Includes a "View Lead" button that links directly to the CRM lead record.
 
 ## Deluge Script
-- `SendLeadToCliq.deluge`: Contains the main Deluge function.
+- `SendLeadToCliq`: Contains the main Deluge function.
 
 ## Setup in Zoho CRM
 1. Navigate to **Setup > Automation > Workflow Rules**.
